@@ -47,7 +47,7 @@ module.exports = {
       content: {
         type: DataTypes.STRING,
       },
-      author_id: {
+      user_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {

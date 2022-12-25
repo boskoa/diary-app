@@ -16,7 +16,7 @@ Entry.init(
     content: {
       type: DataTypes.STRING,
     },
-    authorId: {
+    userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {

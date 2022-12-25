@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 const { SequelizeStorage, Umzug } = require("umzug");
-const DATABASE_URL = process.env.DATABASE_URL;
+const { DATABASE_URL } = require("./config");
 
 const sequelize = new Sequelize(DATABASE_URL, {
   dialect: "postgres",
