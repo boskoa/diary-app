@@ -1,0 +1,7 @@
+PUT http://localhost:3003/api/users/1
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJrb2NrbyIsImlhdCI6MTY3MTk4OTk1OX0.pbd4PG72n5NzPTHNAZJ3VaKImBpK8_HMMPdC2_ItzPI
+
+{
+  "name": "Kocko"
+}

@@ -4,8 +4,27 @@ const bcrypt = require("bcrypt");
 const { tokenExtractor } = require("../utils/tokenExtractor");
 
 router.get("/", async (req, res, next) => {
+  let where = {};
+  let order = [];
+
+  if (req.query.search) {
+    where = {
+      name: req.query.search,
+    };
+  }
+
+  if (req.query.order) {
+    order.push(["name", req.query.order]);
+  }
+
   try {
-    const users = await User.findAll({});
+    const users = await User.findAll({
+      where,
+      order,
+      attributes: {
+        exclude: ["passwordHash"],
+      },
+    });
     res.json(users);
   } catch (error) {
     next(error);
@@ -48,6 +67,44 @@ router.post("/", async (req, res, next) => {
     res.status(200).json(user);
   } catch (error) {
     res.status(401).json({ error: "Invalid credentials" });
+    next(error);
+  }
+});
+
+router.put("/:id", tokenExtractor, async (req, res, next) => {
+  const user = await User.findByPk(req.params.id, {
+    attributes: {
+      exclude: ["passwordHash"],
+    },
+  });
+
+  if (!user) {
+    return res.status(401).json({ error: "No such user" });
+  }
+
+  const changer = await User.findByPk(req.decodedToken.id, {
+    attributes: {
+      exclude: ["passwordHash"],
+    },
+  });
+
+  if (changer.id !== user.id) {
+    return res.status(401).json({ error: "You are not authorized" });
+  }
+
+  const newValues = { ...req.body };
+
+  if (newValues.password) {
+    const passwordHash = await bcrypt.hash(newValues.password, 10);
+    delete newValues.password;
+    newValues.passwordHash = passwordHash;
+  }
+
+  try {
+    user.set({ ...newValues });
+    await user.save();
+    res.status(200).json(user);
+  } catch (error) {
     next(error);
   }
 });
