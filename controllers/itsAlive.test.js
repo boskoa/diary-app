@@ -1,5 +1,5 @@
 const request = require("supertest");
-const { app } = require("./app");
+const { app } = require("../app");
 
 describe("Checking if it is alive", () => {
   test("Should respond with 200 status code", async () => {
