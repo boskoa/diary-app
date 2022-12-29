@@ -57,15 +57,14 @@ router.post("/", tokenExtractor, async (req, res, next) => {
 
 router.put("/:id", tokenExtractor, async (req, res, next) => {
   const user = await User.findByPk(req.decodedToken.id);
-
-  if (!user) {
-    return res.status(401).json({ error: "Not authorized" });
-  }
-
   const entry = await Entry.findByPk(req.params.id);
 
   if (!entry) {
     return res.status(401).json({ error: "No entry with that ID" });
+  }
+
+  if (!user || user.id !== entry.userId) {
+    return res.status(401).json({ error: "Not authorized" });
   }
 
   const newEntryData = { ...req.body };
@@ -78,6 +77,26 @@ router.put("/:id", tokenExtractor, async (req, res, next) => {
     entry.set({ ...newEntryData });
     await entry.save();
     res.status(200).json(entry);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.delete("/:id", tokenExtractor, async (req, res, next) => {
+  const user = await User.findByPk(req.decodedToken.id);
+  const entry = await Entry.findByPk(req.params.id);
+
+  if (!entry) {
+    return res.status(401).json({ error: "No entry with that ID" });
+  }
+
+  if (!user || user.id !== entry.userId) {
+    return res.status(401).json({ error: "Not authorized" });
+  }
+
+  try {
+    await entry.destroy();
+    res.status(200).json({ id: Number(req.params.id) });
   } catch (error) {
     next(error);
   }
