@@ -4,9 +4,7 @@ import App from "./App";
 import { Provider } from "react-redux";
 import store from "./app/store";
 import { getAllUsers } from "./features/users/usersSlice";
-import { ThemeProvider } from "styled-components";
-import GlobalStyle from "./GlobalStyle";
-import { light } from "./themes";
+import { BrowserRouter as Router } from "react-router-dom";
 import { loginUser } from "./features/login/loginSlice";
 
 store.dispatch(getAllUsers());
@@ -16,10 +14,9 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ThemeProvider theme={light}>
-        <GlobalStyle />
+      <Router>
         <App />
-      </ThemeProvider>
+      </Router>
     </Provider>
   </React.StrictMode>
 );

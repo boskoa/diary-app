@@ -9,11 +9,22 @@ const GlobalStyle = createGlobalStyle`
   }
 
   h3 {
-    font-size: 5rem;
+    font-size: 4em;
   }
 
   p {
-    font-size: 3rem;
+    font-size: 2.5em;
+  }
+
+  #theme {
+    background-color: inherit;
+    border-radius: 50%;
+    height: 2em;
+    width: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
   }
 `;
 

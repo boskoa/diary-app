@@ -1,5 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Route, Routes } from "react-router-dom";
+import { ThemeProvider } from "styled-components";
+import Layout from "./components/Layout";
 import {
   getAllEntries,
   selectEntryById,
@@ -18,8 +21,11 @@ import {
   selectUsersError,
   selectUsersLoading,
 } from "./features/users/usersSlice";
+import GlobalStyle from "./GlobalStyle";
+import { light, dark } from "./themes";
 
 function App() {
+  const [theme, setTheme] = useState("light");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -51,16 +57,21 @@ function App() {
     return <div>Loading...</div>;
   }
 
+  function handleTheme() {
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+    //dodati i u localeStorage
+  }
+
   console.log("DATA", ids, user, error, entry, login);
 
   return (
     <div>
-      <h3>Hai, what an ugly font... or not</h3>
-      <p>
-        {users.map((u, i) => (
-          <span key={i}>{u.name}</span>
-        ))}
-      </p>
+      <ThemeProvider theme={theme === "light" ? light : dark}>
+        <GlobalStyle />
+        <Routes>
+          <Route path="/" element={<Layout handleTheme={handleTheme} />} />
+        </Routes>
+      </ThemeProvider>
     </div>
   );
 }
