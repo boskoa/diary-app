@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import Layout from "./components/Layout";
+import LoginModal from "./features/login/LoginModal";
 import {
   getAllEntries,
   selectEntryById,
@@ -27,6 +28,8 @@ import { light, dark } from "./themes";
 function App() {
   const [theme, setTheme] = useState("light");
   const dispatch = useDispatch();
+  //const loading = useSelector(selectUsersLoading);
+  //const loginLoading = useSelector(selectLoginLoading);
 
   useEffect(() => {
     const loggedUser = window.localStorage.getItem("loggedDiaryUser");
@@ -36,13 +39,14 @@ function App() {
   }, [dispatch]);
 
   // temporary
+  /*
   const users = useSelector(selectAllUser);
   const ids = useSelector(selectUserIds);
   const user = useSelector((state) => selectUserById(state, 1));
-  const loading = useSelector(selectUsersLoading);
+  
   const error = useSelector(selectUsersError);
   const entry = useSelector((state) => selectEntryById(state, 1));
-  const loginLoading = useSelector(selectLoginLoading);
+  
   const login = useSelector(selectLoggedUser);
   const token = useSelector(selectToken);
 
@@ -52,24 +56,34 @@ function App() {
       dispatch(getAllEntries(token));
     }
   }, [loginLoading]);
-
+*/
+  useEffect(() => {
+    const prevTheme = window.localStorage.getItem("diaryTheme");
+    setTheme(prevTheme);
+  }, []);
+  /*
   if (loading || loginLoading) {
     return <div>Loading...</div>;
   }
-
+*/
   function handleTheme() {
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
-    //dodati i u localeStorage
+    window.localStorage.setItem(
+      "diaryTheme",
+      theme === "light" ? "dark" : "light"
+    );
   }
 
-  console.log("DATA", ids, user, error, entry, login);
+  //console.log("DATA", ids, user, error, entry, login);
 
   return (
     <div>
       <ThemeProvider theme={theme === "light" ? light : dark}>
         <GlobalStyle />
         <Routes>
-          <Route path="/" element={<Layout handleTheme={handleTheme} />} />
+          <Route path="/" element={<Layout handleTheme={handleTheme} />}>
+            <Route path="login" element={<LoginModal />} />
+          </Route>
         </Routes>
       </ThemeProvider>
     </div>

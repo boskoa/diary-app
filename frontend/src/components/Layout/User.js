@@ -1,15 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import {
-  loginUser,
-  logout,
-  selectLoggedUser,
-} from "../../features/login/loginSlice";
+import { Link, useLocation } from "react-router-dom";
+import { logout, selectLoggedUser } from "../../features/login/loginSlice";
 import UserDropdownMenu from "./UserDropdownMenu";
 
 function User() {
   const [dropdown, setDropdown] = useState(false);
+  const backdrop = useLocation();
   const login = useSelector(selectLoggedUser);
   const dispatch = useDispatch();
 
@@ -34,20 +31,25 @@ function User() {
       <p>Statistics</p>
     </Link>,
     <p onClick={handleLogout} key={5}>
-      Log out
+      Logout
     </p>,
   ];
 
   const logItems = [
-    <p
-      onClick={
-        () => dispatch(loginUser({ username: "kocko", password: "lozinka" })) //prilagoditi kad se završi login modal
-      }
+    <Link
       key={1}
+      style={{ textDecoration: "none", color: "inherit" }}
+      to="login"
     >
-      Log in
-    </p>,
-    <p key={2}>Sign up</p>,
+      <p
+        onClick={
+          () => console.log("LOG ME IN") //dispatch(loginUser({ username: "kocko", password: "lozinka" })) //prilagoditi kad se završi login modal
+        }
+      >
+        Login
+      </p>
+    </Link>,
+    <p key={2}>Signup</p>,
   ];
 
   const wrapperRef = useRef(null);
@@ -65,17 +67,18 @@ function User() {
   }, [wrapperRef, setDropdown]);
 
   return (
-    <div
-      ref={wrapperRef}
-      id="user"
-      onClick={() => setDropdown((prev) => (prev === false ? true : false))}
-    >
-      <img alt="default avatar" src="/public/data/defaults/user_avatar" />
+    <div ref={wrapperRef} id="user">
+      <img
+        alt="default avatar"
+        src="/public/data/defaults/user_avatar"
+        onClick={() => setDropdown((prev) => (prev === false ? true : false))}
+      />
       <UserDropdownMenu
         dropdown={dropdown}
         setDropdown={setDropdown}
         items={login ? loggedItems : logItems}
       />
+      {backdrop.pathname === "/login" && <div id="backdrop" />}
     </div>
   );
 }

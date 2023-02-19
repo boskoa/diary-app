@@ -1,3 +1,4 @@
+import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 import AppName from "./AppName";
 import Nav from "./Nav";
@@ -17,6 +18,7 @@ function Layout({ handleTheme }) {
         <AppName />
         <User />
       </Nav>
+      <Outlet />
     </StyledLayout>
   );
 }

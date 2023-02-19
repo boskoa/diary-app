@@ -27,16 +27,15 @@ const loginSlice = createSlice({
   reducers: {
     alreadyLogged: (state, action) => {
       state.user = action.payload;
-      console.log("ALREADY LOGGED", state.user);
     },
     logout: (state) => {
-      state.user = null; // obrisati localstorage u logout handleru, kad se napravi
-      console.log("LOGOUT", state.user);
+      state.user = null;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.pending, (state) => {
+        state.error = null;
         state.loading = true;
       })
       .addCase(loginUser.fulfilled, (state, action) => {

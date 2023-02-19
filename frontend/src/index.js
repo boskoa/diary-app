@@ -8,7 +8,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { loginUser } from "./features/login/loginSlice";
 
 store.dispatch(getAllUsers());
-store.dispatch(loginUser({ username: "kocko", password: "lozinka" }));
+//store.dispatch(loginUser({ username: "kocko", password: "lozinka" }));
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
