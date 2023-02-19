@@ -10,7 +10,12 @@ function ThemeButton({ handleTheme }) {
   }, [theme]);
   return (
     <div id="theme" onClick={handleTheme} title="Switch to dark/light mode">
-      <DarkModeIcon style={{ color: theme.icon }} />
+      <DarkModeIcon
+        style={{
+          color: theme.icon,
+          transition: "color 1s",
+        }}
+      />
     </div>
   );
 }

@@ -33,7 +33,7 @@ function App() {
     if (loggedUser) {
       dispatch(alreadyLogged(JSON.parse(loggedUser)));
     }
-  }, []);
+  }, [dispatch]);
 
   // temporary
   const users = useSelector(selectAllUser);

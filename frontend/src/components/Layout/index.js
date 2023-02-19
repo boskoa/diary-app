@@ -1,25 +1,23 @@
 import styled from "styled-components";
 import AppName from "./AppName";
+import Nav from "./Nav";
 import ThemeButton from "./ThemeButton";
+import User from "./User";
 
-const StyledNav = styled.nav`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: ${({ theme }) => theme.bg};
-  color: ${({ theme }) => theme.text};
-  padding: 0.3em 1em;
-  font-weight: 600;
-  min-width: 300px;
+const StyledLayout = styled.div`
+  background-color: ${({ theme }) => theme.base};
+  min-height: 100vh;
 `;
 
 function Layout({ handleTheme }) {
   return (
-    <StyledNav>
-      <ThemeButton handleTheme={handleTheme} />
-      <AppName />
-      <p>login</p>
-    </StyledNav>
+    <StyledLayout>
+      <Nav>
+        <ThemeButton handleTheme={handleTheme} />
+        <AppName />
+        <User />
+      </Nav>
+    </StyledLayout>
   );
 }
 

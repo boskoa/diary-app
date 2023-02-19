@@ -6,6 +6,7 @@
   "scripts": {
     "test": "jest",
     "dev": "nodemon index.js",
+    "start": "node index.js",
     "migration:down": "node utils/rollback.js",
     "lint": "eslint ."
   },
