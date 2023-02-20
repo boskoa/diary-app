@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
@@ -24,6 +24,10 @@ import {
 } from "./features/users/usersSlice";
 import GlobalStyle from "./GlobalStyle";
 import { light, dark } from "./themes";
+import Spinner from "./components/Spinner";
+
+const UserSettings = lazy(() => import("./features/users/UserSettings"));
+const Statistics = lazy(() => import("./features/entries/Statistics"));
 
 function App() {
   const [theme, setTheme] = useState("light");
@@ -83,6 +87,22 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout handleTheme={handleTheme} />}>
             <Route path="login" element={<LoginModal />} />
+            <Route
+              path="settings"
+              element={
+                <Suspense fallback={<Spinner />}>
+                  <UserSettings />
+                </Suspense>
+              }
+            />
+            <Route
+              path="statistics"
+              element={
+                <Suspense fallback={<Spinner />}>
+                  <Statistics />
+                </Suspense>
+              }
+            />
           </Route>
         </Routes>
       </ThemeProvider>

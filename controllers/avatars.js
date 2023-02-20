@@ -1,14 +1,14 @@
 const router = require("express").Router();
 const multer = require("multer");
 const { User } = require("../models");
-const tokenExtractor = require("../utils/tokenExtractor");
+const { tokenExtractor } = require("../utils/tokenExtractor");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "./public/data/uploads");
   },
   filename: (req, file, cb) => {
-    cb(null, file.originalname.toLowerCase().split(" ").join("_")); //posle promeniti u "file.originalName"
+    cb(null, req.params.id);
   },
 });
 
@@ -59,7 +59,7 @@ router.post("/:id", upload.single("file"), async (req, res, next) => {
   return 0;
 });
 // Adapt if necessary
-router.get("/remove/:id", tokenExtractor, async (req, res, next) => {
+router.delete("/:id", tokenExtractor, async (req, res, next) => {
   try {
     const userAdmin = await User.findByPk(req.decodedToken.id);
     const user = await User.findByPk(req.params.id);

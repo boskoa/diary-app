@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { logout, selectLoggedUser } from "../../features/login/loginSlice";
 import UserDropdownMenu from "./UserDropdownMenu";
 
@@ -9,10 +9,12 @@ function User() {
   const backdrop = useLocation();
   const login = useSelector(selectLoggedUser);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   function handleLogout() {
     window.localStorage.removeItem("loggedDiaryUser");
     dispatch(logout());
+    navigate("/");
   }
 
   const loggedItems = [
@@ -26,7 +28,7 @@ function User() {
     <Link
       key={4}
       style={{ textDecoration: "none", color: "inherit" }}
-      to="Statistics"
+      to="statistics"
     >
       <p>Statistics</p>
     </Link>,
@@ -41,13 +43,7 @@ function User() {
       style={{ textDecoration: "none", color: "inherit" }}
       to="login"
     >
-      <p
-        onClick={
-          () => console.log("LOG ME IN") //dispatch(loginUser({ username: "kocko", password: "lozinka" })) //prilagoditi kad se završi login modal
-        }
-      >
-        Login
-      </p>
+      <p>Login</p>
     </Link>,
     <p key={2}>Signup</p>,
   ];
@@ -69,8 +65,12 @@ function User() {
   return (
     <div ref={wrapperRef} id="user">
       <img
+        height={100}
         alt="default avatar"
-        src="/public/data/defaults/user_avatar"
+        src={login?.id} // `/public/data/uploads/${login?.id}`
+        onError={(e) => {
+          e.currentTarget.src = "/user_avatar"; // /public/data/defaults/user_avatar
+        }}
         onClick={() => setDropdown((prev) => (prev === false ? true : false))}
       />
       <UserDropdownMenu

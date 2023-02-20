@@ -19,16 +19,23 @@ const GlobalStyle = createGlobalStyle`
   #theme {
     background-color: inherit;
     border-radius: 50%;
+    box-shadow: 1px 1px 5px -1px rgba(0, 0, 0, 0.5);
     height: 2em;
     width: 2em;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    transition: box-shadow 0.2s;
+  }
+
+  #theme:active {
+    box-shadow: none;
   }
 
   #user {
     background-color: inherit;
+    box-shadow: 1px 1px 5px -1px rgba(0, 0, 0, 0.5);
     border-radius: 50%;
     height: 2em;
     width: 2em;
@@ -37,11 +44,18 @@ const GlobalStyle = createGlobalStyle`
     align-items: center;
     cursor: pointer;
     position: relative;
+    transition: box-shadow 0.2s;
+  }
+
+  #user:active {
+    box-shadow: none;
   }
 
   img {
+    border-radius: 50%;
     height: 100%;
     width: 100%;
+    object-fit: cover;
   }
 
   .dropdown {
@@ -62,7 +76,7 @@ const GlobalStyle = createGlobalStyle`
   .dropdown-active {
     max-height: 100px;
     padding-bottom: 5px;
-    box-shadow: 0 5px 5px -1px rgba(0, 0, 0, 0.5)
+    box-shadow: 0 5px 5px -1px rgba(0, 0, 0, 0.5);
   }
 
   .dropdown-inactive {
@@ -91,7 +105,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   .modal input {
-    background-color: rgba(250, 250, 250, 0.1);
+    background-color: rgba(250, 250, 250, 0.3);
     border: 0.5px solid rgba(250, 250, 250, 0.1);
     border-radius: 3px;
     font-size: 1em;
@@ -143,6 +157,58 @@ const GlobalStyle = createGlobalStyle`
     to {
       color: orange;
     }
+  }
+
+  #settings-main {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    gap: 10px;
+    margin: 5px;
+    flex-wrap: wrap;
+  }
+
+  #settings {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 5px;
+    max-width: 80vw;
+  }
+
+  #settings label, input {
+    font-size: 2em;
+  }
+
+  #avatar-box {
+    font-size: 1em;
+    max-width: 80vw;
+    margin: 5px;
+  }
+
+  .loader {
+    border: 10px solid brown;
+    border-top: 10px solid yellow;
+    border-radius: 50%;
+    margin: 30px calc(50% - 25px);
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  #statistics {
+    display: flex;
+    flex-direction: column;
   }
 `;
 

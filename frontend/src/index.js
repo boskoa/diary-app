@@ -5,7 +5,6 @@ import { Provider } from "react-redux";
 import store from "./app/store";
 import { getAllUsers } from "./features/users/usersSlice";
 import { BrowserRouter as Router } from "react-router-dom";
-import { loginUser } from "./features/login/loginSlice";
 
 store.dispatch(getAllUsers());
 //store.dispatch(loginUser({ username: "kocko", password: "lozinka" }));

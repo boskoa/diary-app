@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -18,6 +18,27 @@ function useLogin() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (loggedUser) {
+      console.log("LOGGEDUSER", loggedUser);
+      setUsername("");
+      setPassword("");
+      setUsernameError("");
+      setPasswordError("");
+      navigate("/");
+    }
+  }, [loggedUser, navigate]);
+
+  useEffect(() => {
+    let index;
+    if (loginErrorSelector) {
+      setLoginError("Wrong credentials");
+      index = setTimeout(() => setLoginError(""), 4000);
+    }
+
+    return () => clearTimeout(index);
+  }, [loginErrorSelector]);
+
   function submit() {
     if (username.length < 2 || username.length > 20) {
       return setUsernameError(
@@ -36,22 +57,6 @@ function useLogin() {
     }
 
     dispatch(loginUser({ username, password }));
-
-    if (loggedUser) {
-      console.log("LOGGEDUSER", loggedUser, loginError);
-      setUsername("");
-      setPassword("");
-      setUsernameError("");
-      setPasswordError("");
-      navigate("/");
-    }
-
-    if (loginErrorSelector) {
-      setLoginError("Wrong credentials");
-      const index = setTimeout(() => setLoginError(""), 4000);
-
-      return () => clearTimeout(index);
-    }
   }
 
   return {

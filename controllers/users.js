@@ -82,11 +82,7 @@ router.put("/:id", tokenExtractor, async (req, res, next) => {
     return res.status(401).json({ error: "No such user" });
   }
 
-  const changer = await User.findByPk(req.decodedToken.id, {
-    attributes: {
-      exclude: ["passwordHash"],
-    },
-  });
+  const changer = await User.findByPk(req.decodedToken.id);
 
   if (changer.id !== user.id) {
     return res.status(401).json({ error: "You are not authorized" });
@@ -95,8 +91,18 @@ router.put("/:id", tokenExtractor, async (req, res, next) => {
   const newValues = { ...req.body };
 
   if (newValues.password) {
-    const passwordHash = await bcrypt.hash(newValues.password, 10);
+    const passwordCorrect = await bcrypt.compare(
+      req.body.password,
+      changer.passwordHash
+    );
+
+    if (!passwordCorrect) {
+      return res.status(401).json({ error: "Invalid password" });
+    }
+
+    const passwordHash = await bcrypt.hash(newValues.newPassword, 10);
     delete newValues.password;
+    delete newValues.newPassword;
     newValues.passwordHash = passwordHash;
   }
 
