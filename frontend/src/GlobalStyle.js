@@ -16,7 +16,7 @@ const GlobalStyle = createGlobalStyle`
     font-size: 2.5em;
   }
 
-  #theme {
+  .buttons {
     background-color: inherit;
     border-radius: 50%;
     box-shadow: 1px 1px 5px -1px rgba(0, 0, 0, 0.5);
@@ -29,26 +29,12 @@ const GlobalStyle = createGlobalStyle`
     transition: box-shadow 0.2s;
   }
 
-  #theme:active {
+  .buttons:active {
     box-shadow: none;
   }
 
   #user {
-    background-color: inherit;
-    box-shadow: 1px 1px 5px -1px rgba(0, 0, 0, 0.5);
-    border-radius: 50%;
-    height: 2em;
-    width: 2em;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
     position: relative;
-    transition: box-shadow 0.2s;
-  }
-
-  #user:active {
-    box-shadow: none;
   }
 
   img {
@@ -148,6 +134,7 @@ const GlobalStyle = createGlobalStyle`
     font-size: 1em;
     color: inherit;
     animation: blink 1s infinite alternate;
+    padding: 10px;
   }
 
   @keyframes blink {
@@ -164,7 +151,6 @@ const GlobalStyle = createGlobalStyle`
     justify-content: center;
     flex-direction: row;
     gap: 10px;
-    margin: 5px;
     flex-wrap: wrap;
   }
 
@@ -194,7 +180,7 @@ const GlobalStyle = createGlobalStyle`
     width: 50px;
     height: 50px;
     animation: spin 1s linear infinite;
-    box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px -3px 5px 0px rgba(0, 0, 0, 0.5), inset 0px 3px 5px 0px rgba(0, 0, 0, 0.5);
   }
 
   @keyframes spin {
@@ -206,9 +192,78 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
-  #statistics {
+  .subcontainer {
     display: flex;
     flex-direction: column;
+  }
+
+  #app-name {
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+    text-shadow: 0px 3px 3px rgba(0, 0, 0, 0.5);
+    top: 0;
+    transition: text-shadow 0.5s, top 0.5s;
+    animation: 1s ease-out 3s intro;
+  }
+
+  #app-name:active {
+    text-shadow: none;
+    top: 1px;
+  }
+
+  @keyframes intro {
+    0% {
+      transform: rotateX(0deg);
+    }
+    100% {
+      transform: rotateX(360deg);
+    }
+  }
+
+  table {
+    font-size: 1.7em;
+  }
+
+  #edit-button {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+  }
+
+  .entry-modal {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    gap: 10px;
+    width: 200px;
+    margin: 10vh calc(50% - 100px) 0 calc(50% - 100px);
+    border: 1px solid rgba(250, 250, 250, 0.1);
+    box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    font-size: 1.5em;
+    position: absolute;
+    z-index: 2001;
+    animation: entry-modal-enter 1s;
+  }
+
+  .entry-modal input, textarea {
+    background-color: rgba(250, 250, 250, 0.3);
+    border: 0.5px solid rgba(250, 250, 250, 0.1);
+    border-radius: 3px;
+  }
+
+  .entry-modal > input {
+    font-size: 1.3em;
+  }
+
+  .entry-modal > textarea {
+    font-size: 1.2em;
+  }
+
+  @keyframes entry-modal-enter {
+    from { margin-top: -400px; }
+    to { margin-top: 10vh; }
   }
 `;
 

@@ -1,11 +1,8 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import useLogin from "../../customHooks/useLogin";
-import { selectLoginError } from "./loginSlice";
 
-const StyledModal = styled.div`
+export const StyledModal = styled.div`
   color: ${({ theme }) => theme.text};
   background-color: ${({ theme }) => theme.bg};
 `;

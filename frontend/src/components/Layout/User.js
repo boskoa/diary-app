@@ -12,6 +12,7 @@ function User() {
   const navigate = useNavigate();
 
   function handleLogout() {
+    setDropdown(false);
     window.localStorage.removeItem("loggedDiaryUser");
     dispatch(logout());
     navigate("/");
@@ -22,6 +23,7 @@ function User() {
       key={3}
       style={{ textDecoration: "none", color: "inherit" }}
       to="settings"
+      onClick={() => setDropdown(false)}
     >
       <p>Settings</p>
     </Link>,
@@ -29,6 +31,7 @@ function User() {
       key={4}
       style={{ textDecoration: "none", color: "inherit" }}
       to="statistics"
+      onClick={() => setDropdown(false)}
     >
       <p>Statistics</p>
     </Link>,
@@ -63,7 +66,7 @@ function User() {
   }, [wrapperRef, setDropdown]);
 
   return (
-    <div ref={wrapperRef} id="user">
+    <div ref={wrapperRef} className="buttons" id="user">
       <img
         height={100}
         alt="default avatar"

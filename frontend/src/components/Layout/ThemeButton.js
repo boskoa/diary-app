@@ -5,7 +5,11 @@ function ThemeButton({ handleTheme }) {
   const theme = useTheme();
 
   return (
-    <div id="theme" onClick={handleTheme} title="Switch to dark/light mode">
+    <div
+      className="buttons"
+      onClick={handleTheme}
+      title="Switch to dark/light mode"
+    >
       <DarkModeIcon
         style={{
           color: theme.icon,

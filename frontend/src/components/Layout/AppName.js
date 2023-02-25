@@ -12,7 +12,7 @@ function AppName() {
     return () => window.removeEventListener("resize", handleWidth);
   }, []);
   return (
-    <Link style={{ textDecoration: "none", color: "inherit" }} to="/">
+    <Link id="app-name" to="/">
       <p>{width > 350 ? "Diary" : "D"}</p>
     </Link>
   );

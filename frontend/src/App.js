@@ -25,6 +25,7 @@ import {
 import GlobalStyle from "./GlobalStyle";
 import { light, dark } from "./themes";
 import Spinner from "./components/Spinner";
+import MainPage from "./features/entries/MainPage";
 
 const UserSettings = lazy(() => import("./features/users/UserSettings"));
 const Statistics = lazy(() => import("./features/entries/Statistics"));
@@ -86,6 +87,7 @@ function App() {
         <GlobalStyle />
         <Routes>
           <Route path="/" element={<Layout handleTheme={handleTheme} />}>
+            <Route index element={<MainPage />} />
             <Route path="login" element={<LoginModal />} />
             <Route
               path="settings"
