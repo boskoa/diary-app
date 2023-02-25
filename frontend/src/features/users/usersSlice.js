@@ -14,12 +14,21 @@ const usersAdapter = createEntityAdapter({
 const initialState = usersAdapter.getInitialState({
   loading: false,
   error: null,
+  success: false, //for purpose of creating new user
 });
 
 export const getAllUsers = createAsyncThunk("users/getAllUsers", async () => {
   const response = await axios.get(USERS_URL);
   return response.data;
 });
+
+export const createNewUser = createAsyncThunk(
+  "users/createNewUser",
+  async (data) => {
+    const response = await axios.post(USERS_URL, { ...data });
+    return response.data;
+  }
+);
 
 export const updateUser = createAsyncThunk("users/updateUser", async (data) => {
   const { token, newUserData, id } = data;
@@ -61,6 +70,19 @@ const usersSlice = createSlice({
       .addCase(updateUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+      .addCase(createNewUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(createNewUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+        usersAdapter.upsertOne(state, action.payload);
+      })
+      .addCase(createNewUser.rejected, (state, action) => {
+        state.loading = false;
+        state.success = false;
+        state.error = action.error.message;
       });
   },
 });
@@ -77,6 +99,10 @@ export function selectUsersLoading(state) {
 
 export function selectUsersError(state) {
   return state.users.error;
+}
+
+export function selectUserCreated(state) {
+  return state.users.success;
 }
 
 export default usersSlice.reducer;

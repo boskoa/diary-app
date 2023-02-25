@@ -81,7 +81,9 @@ export const deleteEntry = createAsyncThunk(
 const entriesSlice = createSlice({
   name: "entries",
   initialState,
-  reducers: {},
+  reducers: {
+    emptyEntries: () => initialState,
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getAllEntries.pending, (state) => {
@@ -144,5 +146,7 @@ export function selectEntriesLoading(state) {
 export function selectEntriesError(state) {
   return state.entries.error;
 }
+
+export const { emptyEntries } = entriesSlice.actions;
 
 export default entriesSlice.reducer;

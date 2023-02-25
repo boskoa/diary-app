@@ -2,41 +2,40 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
-  loginUser,
-  selectLoggedUser,
-  selectLoginError,
-} from "../features/login/loginSlice";
+  createNewUser,
+  selectUserCreated,
+  selectUsersError,
+} from "../features/users/usersSlice";
 
-function useLogin() {
+function useSignup() {
   const [username, setUsername] = useState("");
   const [usernameError, setUsernameError] = useState("");
+  const [name, setName] = useState("");
+  const [nameError, setNameError] = useState("");
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [loginError, setLoginError] = useState("");
-  const loginErrorSelector = useSelector(selectLoginError);
-  const loggedUser = useSelector(selectLoggedUser);
+  const [signupError, setSignupError] = useState("");
+  const signupErrorSelector = useSelector(selectUsersError);
+  const userCreated = useSelector(selectUserCreated);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (loggedUser) {
-      setUsername("");
-      setPassword("");
-      setUsernameError("");
-      setPasswordError("");
-      navigate("/");
-    }
-  }, [loggedUser, navigate]);
-
-  useEffect(() => {
     let index;
-    if (loginErrorSelector) {
-      setLoginError("Wrong credentials");
-      index = setTimeout(() => setLoginError(""), 4000);
+    if (signupErrorSelector) {
+      setSignupError("Error: user not created, try to change data");
+      index = setTimeout(() => setSignupError(""), 4000);
     }
 
     return () => clearTimeout(index);
-  }, [loginErrorSelector]);
+  }, [signupErrorSelector]);
+
+  useEffect(() => {
+    if (userCreated) {
+      navigate("/login");
+      setSignupError("");
+    }
+  }, [userCreated, navigate]);
 
   function submit() {
     if (username.length < 2 || username.length > 20) {
@@ -47,6 +46,12 @@ function useLogin() {
       setUsernameError("");
     }
 
+    if (name.length < 1 || name.length > 20) {
+      return setNameError("Name must be between 1 and 20 characters long");
+    } else {
+      setNameError("");
+    }
+
     if (password.length < 5 || password.length > 30) {
       return setPasswordError(
         "Password must be between 5 and 30 characters long"
@@ -55,21 +60,25 @@ function useLogin() {
       setPasswordError("");
     }
 
-    dispatch(loginUser({ username, password }));
+    dispatch(createNewUser({ name, username, password }));
   }
 
   return {
     username,
     setUsername,
+    name,
+    setName,
     password,
     setPassword,
-    loginError,
+    signupError,
     usernameError,
     setUsernameError,
+    nameError,
+    setNameError,
     passwordError,
     setPasswordError,
     submit,
   };
 }
 
-export default useLogin;
+export default useSignup;

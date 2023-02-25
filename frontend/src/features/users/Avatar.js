@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useState } from "react";
-import { StyledButton } from "./UserSettings";
 
 function Avatar({ loggedUser }) {
   const [name, setName] = useState("Choose avatar");
@@ -11,7 +10,6 @@ function Avatar({ loggedUser }) {
     const formData = new FormData();
     formData.append("name", name);
     formData.append("file", file);
-    console.log("LOGGED USER", loggedUser);
     await axios.post(
       `http://localhost:3003/api/avatars/${loggedUser.id}`,
       formData,
@@ -53,12 +51,14 @@ function Avatar({ loggedUser }) {
             }}
           />
         </label>
-        <StyledButton
+        <button
+          className="settings-button"
+          disabled={!file}
           style={{ margin: 0, width: "60px" }}
           onClick={(e) => handleSubmit(e)}
         >
           Set
-        </StyledButton>
+        </button>
       </form>
       {file && (
         <img

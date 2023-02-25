@@ -116,18 +116,20 @@ const GlobalStyle = createGlobalStyle`
 
   .modal-buttons button {
     background: inherit;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(255, 255, 255, 0.2);
     color: inherit;
-    border: 0.5px solid rgba(250, 250, 250, 0.3);
+    border: none;
     border-radius: 5px;
+    box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.5);
     cursor: pointer;
     padding: 5px;
     font-size: 1em;
-    transition: background-color 0.2s
+    transition: background-color 0.2s, box-shadow 0.2s;
   }
 
   .modal-buttons button:active {
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(255, 255, 255, 0.4);
+    box-shadow: none;
   }
 
   .error {
@@ -160,6 +162,25 @@ const GlobalStyle = createGlobalStyle`
     gap: 10px;
     margin: 5px;
     max-width: 80vw;
+  }
+
+  .settings-button {
+    background: inherit;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: inherit;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    padding: 5px;
+    font-size: 1.5em;
+    transition: background-color 0.2s;
+    margin-top: 10px;
+  }
+
+  .settings-button:active {
+    background-color: rgba(255, 255, 255, 0.4);
+    box-shadow: none;
   }
 
   #settings label, input {
@@ -242,7 +263,7 @@ const GlobalStyle = createGlobalStyle`
     box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.5);
     border-radius: 5px;
     font-size: 1.5em;
-    position: absolute;
+    position: fixed;
     z-index: 2001;
     animation: entry-modal-enter 1s;
   }
@@ -251,6 +272,7 @@ const GlobalStyle = createGlobalStyle`
     background-color: rgba(250, 250, 250, 0.3);
     border: 0.5px solid rgba(250, 250, 250, 0.1);
     border-radius: 3px;
+    white-space: pre-line;
   }
 
   .entry-modal > input {
@@ -264,6 +286,39 @@ const GlobalStyle = createGlobalStyle`
   @keyframes entry-modal-enter {
     from { margin-top: -400px; }
     to { margin-top: 10vh; }
+  }
+
+  #filter input, select {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: inherit;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.5);
+    font-size: 1.5rem;
+    height: 100%;
+  }
+
+  #filter input[type=number] { 
+    -moz-appearance: textfield;
+    appearance: textfield;
+    margin: 0; 
+}
+
+  .filter-button {
+    font-size: 1.5rem;
+    background-color: rgba(30, 30, 0, 0.2);
+    color: inherit;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    padding: 5px;
+    transition: background-color 0.2s, box-shadow 0.2s;
+  }
+
+  .filter-button:active {
+    background-color: rgba(30, 30, 0, 0.4);
+    box-shadow: none;
   }
 `;
 

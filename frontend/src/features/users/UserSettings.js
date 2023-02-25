@@ -15,19 +15,6 @@ const StyledInput = styled.input`
   border-radius: 3px;
 `;
 
-export const StyledButton = styled.button`
-  background: inherit;
-  background-color: rgba(0, 0, 0, 0.3);
-  color: inherit;
-  border: 0.5px solid rgba(250, 250, 250, 0.3);
-  border-radius: 5px;
-  cursor: pointer;
-  padding: 5px;
-  font-size: 1.5em;
-  transition: background-color 0.2s;
-  margin-top: 10px;
-`;
-
 function UserSettings() {
   const {
     name,
@@ -80,7 +67,9 @@ function UserSettings() {
             value={currentPassword}
             onChange={(e) => setCurrentPassword(e.target.value)}
           />
-          <StyledButton onClick={submit}>Change</StyledButton>
+          <button className="settings-button" onClick={submit}>
+            Change
+          </button>
           <StyledSettings>
             {updateErrorMessage && (
               <p className="error">{updateErrorMessage}</p>

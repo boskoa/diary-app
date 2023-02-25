@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { emptyEntries } from "../features/entries/entriesSlice";
 import { logout, selectLoggedUser } from "../features/login/loginSlice";
-import { selectUsersError, updateUser } from "../features/users/usersSlice";
+import {
+  selectUserById,
+  selectUsersError,
+  updateUser,
+} from "../features/users/usersSlice";
 
 function useSettings() {
   const [name, setName] = useState("");
@@ -13,17 +18,20 @@ function useSettings() {
   const [currentPassword, setCurrentPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const loggedUser = useSelector(selectLoggedUser);
+  const currentUser = useSelector((state) =>
+    selectUserById(state, loggedUser.id)
+  );
   const updateError = useSelector(selectUsersError);
   const [updateErrorMessage, setUpdateErrorMessage] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (loggedUser) {
-      setName(loggedUser.name);
-      setUsername(loggedUser.username);
+    if (currentUser) {
+      setName(currentUser.name);
+      setUsername(currentUser.username);
     }
-  }, [loggedUser]);
+  }, [currentUser]);
 
   useEffect(() => {
     let index;
@@ -78,17 +86,18 @@ function useSettings() {
     if (username) newUserData.username = username;
     if (currentPassword) newUserData.password = currentPassword;
     if (newPassword) newUserData.newPassword = newPassword;
-    console.log("NEWUSERDATA", newUserData);
 
-    dispatch(
-      updateUser({ token: loggedUser.token, newUserData, id: loggedUser.id })
-    );
-    /*
-    if (!updateError) {
-      console.log("LOGOUT", loggedUser);
+    if (newUserData.newPassword) {
+      dispatch(
+        updateUser({ token: loggedUser.token, newUserData, id: loggedUser.id })
+      );
       handleLogout();
+      dispatch(emptyEntries());
+    } else {
+      dispatch(
+        updateUser({ token: loggedUser.token, newUserData, id: loggedUser.id })
+      );
     }
-    */
   }
 
   return {

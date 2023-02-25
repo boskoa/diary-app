@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { emptyEntries } from "../../features/entries/entriesSlice";
 import { logout, selectLoggedUser } from "../../features/login/loginSlice";
 import UserDropdownMenu from "./UserDropdownMenu";
 
@@ -15,6 +16,7 @@ function User() {
     setDropdown(false);
     window.localStorage.removeItem("loggedDiaryUser");
     dispatch(logout());
+    dispatch(emptyEntries());
     navigate("/");
   }
 
@@ -48,7 +50,13 @@ function User() {
     >
       <p>Login</p>
     </Link>,
-    <p key={2}>Signup</p>,
+    <Link
+      key={2}
+      style={{ textDecoration: "none", color: "inherit" }}
+      to="signup"
+    >
+      <p>Signup</p>
+    </Link>,
   ];
 
   const wrapperRef = useRef(null);
@@ -69,8 +77,8 @@ function User() {
     <div ref={wrapperRef} className="buttons" id="user">
       <img
         height={100}
-        alt="default avatar"
-        src={login?.id} // `/public/data/uploads/${login?.id}`
+        alt="user avatar"
+        src={login ? login.id : "/user_avatar"} // `/public/data/uploads/${login?.id}`
         onError={(e) => {
           e.currentTarget.src = "/user_avatar"; // /public/data/defaults/user_avatar
         }}
@@ -81,7 +89,9 @@ function User() {
         setDropdown={setDropdown}
         items={login ? loggedItems : logItems}
       />
-      {backdrop.pathname === "/login" && <div id="backdrop" />}
+      {["/login", "/signup"].includes(backdrop.pathname) && (
+        <div id="backdrop" />
+      )}
     </div>
   );
 }

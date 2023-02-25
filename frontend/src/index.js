@@ -7,7 +7,6 @@ import { getAllUsers } from "./features/users/usersSlice";
 import { BrowserRouter as Router } from "react-router-dom";
 
 store.dispatch(getAllUsers());
-//store.dispatch(loginUser({ username: "kocko", password: "lozinka" }));
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

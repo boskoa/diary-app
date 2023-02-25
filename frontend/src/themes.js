@@ -3,7 +3,7 @@ export const light = {
   text: "brown",
   icon: "rgba(150, 150, 150, 0.6)",
   border: "brown",
-  base: "#d3d4c5",
+  base: "#fc7d47",
 };
 
 export const dark = {

@@ -20,17 +20,21 @@ function Statistics() {
   const userEntries = useSelector(selectAllEntries);
 
   if (userEntries?.length === 0) {
-    return <div />;
+    return (
+      <StatsItem style={{ margin: "1em", padding: "10px", fontSize: "2em" }}>
+        No entries
+      </StatsItem>
+    );
   }
 
   return (
     <div className="subcontainer">
       <CurrentRoute route="Statistics" />
-      <StatsItem>
+      <StatsItem style={{ fontSize: "0.9em" }}>
         <p>Total entries:</p>
         <p>{userEntries.length}</p>
       </StatsItem>
-      <StatsItem>
+      <StatsItem style={{ fontSize: "0.9em" }}>
         <TotalEntriesPerYear entries={userEntries} />
       </StatsItem>
       <StatsItem>

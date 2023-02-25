@@ -34,7 +34,7 @@ function EditModal({ id, token, setShowEditModal, setBackdrop, setEntryId }) {
       className="entry-modal"
       style={{ width: "80%", margin: "10vh 10% 0 10%", maxHeight: "80vh" }}
     >
-      <h2>Add new entry</h2>
+      <h2>Edit entry</h2>
       <label htmlFor="entry-title">Title</label>
       <input
         id="entry-title"

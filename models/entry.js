@@ -14,7 +14,7 @@ Entry.init(
       type: DataTypes.STRING,
     },
     content: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT("long"),
     },
     userId: {
       type: DataTypes.INTEGER,
