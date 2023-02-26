@@ -1,9 +1,9 @@
 export const light = {
-  bg: "#e0e848",
-  text: "brown",
+  bg: "#d8fcbd",
+  text: "#2d7a42",
   icon: "rgba(150, 150, 150, 0.6)",
   border: "brown",
-  base: "#fc7d47",
+  base: "#75fa9b",
 };
 
 export const dark = {

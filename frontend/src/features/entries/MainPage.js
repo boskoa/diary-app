@@ -1,13 +1,17 @@
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import { deleteEntry, selectEntriesLoading } from "./entriesSlice";
+import {
+  changeFilter,
+  deleteEntry,
+  selectEntriesLoading,
+  selectFilteredEntries,
+} from "./entriesSlice";
 import CurrentRoute from "../../components/CurrentRoute";
-import { selectAllEntries } from "./entriesSlice";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
-import { useMemo, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DeleteModal from "./DeleteModal";
 import { selectLoggedUser } from "../login/loginSlice";
 import NewEntryModal from "./NewEntryModal";
@@ -68,41 +72,12 @@ function MainPage() {
   const [entryId, setEntryId] = useState(null);
   const [year, setYear] = useState(null);
   const [month, setMonth] = useState("none");
-  const [timeFilter, setTimeFilter] = useState([]);
+  const [limit, setLimit] = useState(5);
   const dispatch = useDispatch();
-  const userEntries = useSelector(selectAllEntries);
   const loading = useSelector(selectEntriesLoading);
   const user = useSelector(selectLoggedUser);
-  /*
-  const filteredEntries = !timeFilter.length
-    ? userEntries
-    : userEntries.filter((e) => {
-        if (timeFilter[1] === "none") {
-          return new Date(e.createdAt).getFullYear() === timeFilter[0];
-        } else {
-          return (
-            new Date(e.createdAt).getFullYear() === timeFilter[0] &&
-            new Date(e.createdAt).getMonth() === timeFilter[1]
-          );
-        }
-      });
-  */
-  const filteredEntries = useMemo(() => {
-    if (!timeFilter.length) {
-      return userEntries;
-    } else {
-      return userEntries.filter((e) => {
-        if (timeFilter[1] === "none") {
-          return new Date(e.createdAt).getFullYear() === timeFilter[0];
-        } else {
-          return (
-            new Date(e.createdAt).getFullYear() === timeFilter[0] &&
-            new Date(e.createdAt).getMonth() === timeFilter[1]
-          );
-        }
-      });
-    }
-  }, [timeFilter, userEntries]);
+  const filteredEntries = useSelector(selectFilteredEntries);
+  const containerRef = useRef(null);
 
   function handleDeleteEntry() {
     dispatch(deleteEntry({ token: user.token, id: entryId }));
@@ -110,6 +85,21 @@ function MainPage() {
     setShowDeleteModal(false);
     setBackdrop(false);
   }
+
+  useEffect(() => {
+    function handleBottom() {
+      if (
+        containerRef.current.getBoundingClientRect().bottom <=
+        window.innerHeight
+      ) {
+        setLimit((prev) => prev + 5);
+      }
+    }
+
+    document.addEventListener("scroll", handleBottom);
+
+    return () => document.removeEventListener("scroll", handleBottom);
+  }, []);
 
   if (!user) {
     return (
@@ -124,7 +114,7 @@ function MainPage() {
   }
 
   return (
-    <div style={{ height: "100%" }} className="subcontainer">
+    <div style={{ height: "100%" }} className="subcontainer" ref={containerRef}>
       <CurrentRoute route="Main page" />
       <div style={{ display: "flex", justifyContent: "end" }}>
         <Filter id="filter">
@@ -161,7 +151,7 @@ function MainPage() {
                 tempYear = new Date().getFullYear();
                 setYear(tempYear);
               }
-              setTimeFilter([tempYear, month]);
+              dispatch(changeFilter([tempYear, month]));
             }}
           >
             Filter
@@ -169,7 +159,7 @@ function MainPage() {
           <button
             className="filter-button"
             onClick={() => {
-              setTimeFilter([]);
+              dispatch(changeFilter([]));
               setYear(null);
               setMonth("none");
             }}
@@ -178,7 +168,7 @@ function MainPage() {
           </button>
         </Filter>
       </div>
-      {filteredEntries.map((e) => (
+      {filteredEntries.slice(0, limit).map((e) => (
         <Entry key={e.id}>
           <Datum>{new Date(e.createdAt).toLocaleDateString("en-GB")}</Datum>
           <h1 style={{ padding: "5px" }}>{e.title}</h1>

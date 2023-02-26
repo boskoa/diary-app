@@ -23,7 +23,7 @@ function User() {
   const loggedItems = [
     <Link
       key={3}
-      style={{ textDecoration: "none", color: "inherit" }}
+      className="dropdown-links"
       to="settings"
       onClick={() => setDropdown(false)}
     >
@@ -31,30 +31,22 @@ function User() {
     </Link>,
     <Link
       key={4}
-      style={{ textDecoration: "none", color: "inherit" }}
+      className="dropdown-links"
       to="statistics"
       onClick={() => setDropdown(false)}
     >
       <p>Statistics</p>
     </Link>,
-    <p onClick={handleLogout} key={5}>
+    <p className="dropdown-links" onClick={handleLogout} key={5}>
       Logout
     </p>,
   ];
 
   const logItems = [
-    <Link
-      key={1}
-      style={{ textDecoration: "none", color: "inherit" }}
-      to="login"
-    >
+    <Link key={1} className="dropdown-links" to="login">
       <p>Login</p>
     </Link>,
-    <Link
-      key={2}
-      style={{ textDecoration: "none", color: "inherit" }}
-      to="signup"
-    >
+    <Link key={2} className="dropdown-links" to="signup">
       <p>Signup</p>
     </Link>,
   ];
@@ -78,9 +70,13 @@ function User() {
       <img
         height={100}
         alt="user avatar"
-        src={login ? login.id : "/user_avatar"} // `/public/data/uploads/${login?.id}`
+        src={
+          login
+            ? `/public/data/uploads/${login?.id}` // in development: login?.id
+            : "/public/data/defaults/user_avatar" // in development: "/user_avatar"
+        }
         onError={(e) => {
-          e.currentTarget.src = "/user_avatar"; // /public/data/defaults/user_avatar
+          e.currentTarget.src = "/public/data/defaults/user_avatar"; // in development: "/user_avatar"
         }}
         onClick={() => setDropdown((prev) => (prev === false ? true : false))}
       />

@@ -1,6 +1,7 @@
 import {
   createAsyncThunk,
   createEntityAdapter,
+  createSelector,
   createSlice,
 } from "@reduxjs/toolkit";
 import axios from "axios";
@@ -8,12 +9,13 @@ import axios from "axios";
 const ENTRIES_URL = "http://localhost:3003/api/entries";
 
 const entriesAdapter = createEntityAdapter({
-  sortComparer: (a, b) => a.id - b.id,
+  sortComparer: (a, b) => b.id - a.id,
 });
 
 const initialState = entriesAdapter.getInitialState({
   loading: false,
   error: null,
+  filter: [],
 });
 
 export const getAllEntries = createAsyncThunk(
@@ -83,6 +85,9 @@ const entriesSlice = createSlice({
   initialState,
   reducers: {
     emptyEntries: () => initialState,
+    changeFilter: (state, action) => {
+      state.filter = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -97,37 +102,22 @@ const entriesSlice = createSlice({
         state.loading = false;
         state.error = action.error.message;
       })
-      .addCase(addNewEntry.pending, (state) => {
-        state.loading = true;
-      })
       .addCase(addNewEntry.fulfilled, (state, action) => {
-        state.loading = false;
         entriesAdapter.addOne(state, action.payload);
       })
       .addCase(addNewEntry.rejected, (state, action) => {
-        state.loading = false;
         state.error = action.error.message;
       })
-      .addCase(updateEntry.pending, (state) => {
-        state.loading = true;
-      })
       .addCase(updateEntry.fulfilled, (state, action) => {
-        state.loading = false;
         entriesAdapter.upsertOne(state, action.payload);
       })
       .addCase(updateEntry.rejected, (state, action) => {
-        state.loading = false;
         state.error = action.error.message;
       })
-      .addCase(deleteEntry.pending, (state) => {
-        state.loading = true;
-      })
       .addCase(deleteEntry.fulfilled, (state, action) => {
-        state.loading = false;
         entriesAdapter.removeOne(state, action.payload.id);
       })
       .addCase(deleteEntry.rejected, (state, action) => {
-        state.loading = false;
         state.error = action.error.message;
       });
   },
@@ -147,6 +137,26 @@ export function selectEntriesError(state) {
   return state.entries.error;
 }
 
-export const { emptyEntries } = entriesSlice.actions;
+export const selectFilteredEntries = createSelector(
+  [selectAllEntries, (state) => state.entries.filter],
+  (entries, filter) => {
+    if (!filter.length) {
+      return entries;
+    } else {
+      return entries.filter((e) => {
+        if (filter[1] === "none") {
+          return new Date(e.createdAt).getFullYear() === filter[0];
+        } else {
+          return (
+            new Date(e.createdAt).getFullYear() === filter[0] &&
+            new Date(e.createdAt).getMonth() === filter[1]
+          );
+        }
+      });
+    }
+  }
+);
+
+export const { emptyEntries, changeFilter } = entriesSlice.actions;
 
 export default entriesSlice.reducer;

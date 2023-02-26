@@ -320,6 +320,23 @@ const GlobalStyle = createGlobalStyle`
     background-color: rgba(30, 30, 0, 0.4);
     box-shadow: none;
   }
+
+  #navbar-relative {
+    top: -4em;
+  }
+
+  .dropdown-links {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .dropdown-links:hover {
+    opacity: 0.8;
+  }
+
+  .dropdown-links:active {
+    opacity: 0.5;
+  }
 `;
 
 export default GlobalStyle;

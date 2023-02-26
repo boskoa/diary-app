@@ -15,7 +15,7 @@ const UserSettings = lazy(() => import("./features/users/UserSettings"));
 const Statistics = lazy(() => import("./features/entries/Statistics"));
 
 function App() {
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState("dark");
   const dispatch = useDispatch();
 
   useEffect(() => {

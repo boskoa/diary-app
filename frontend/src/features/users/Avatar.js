@@ -20,6 +20,7 @@ function Avatar({ loggedUser }) {
         },
       }
     );
+    window.location.reload(false);
   };
 
   return (
@@ -47,7 +48,6 @@ function Avatar({ loggedUser }) {
             onChange={(e) => {
               setName(loggedUser.id);
               setFile(e.target.files[0]);
-              console.log("FILE", e.target.files[0]);
             }}
           />
         </label>
